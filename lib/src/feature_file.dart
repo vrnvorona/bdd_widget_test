@@ -17,7 +17,7 @@ class FeatureFile {
   final String package;
   final List<BddLine> _lines;
 
-  String get dartContent => generateFeatureDart(_lines, getStepFiles());
+  Future<String> get dartContent async => generateFeatureDart(_lines, getStepFiles(), path);
 
   List<StepFile> getStepFiles() {
     return _lines

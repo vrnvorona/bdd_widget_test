@@ -36,11 +36,11 @@ LineType _lineTypeFromString(String line) {
   return LineType.unknown;
 }
 
-const featureMarkers = ['Feature:'];
+const featureMarkers = ['Feature:', 'Функциональность:'];
 const backgroundMarkers = ['Background:'];
 const afterMarkers = ['After:'];
-const scenarioMarkers = ['Scenario:', 'Example:'];
-const stepMarkers = ['Given', 'When', 'Then', 'And', 'But'];
+const scenarioMarkers = ['Scenario:', 'Example:', 'Сценарий:'];
+const stepMarkers = ['Given', 'When', 'Then', 'And', 'But', 'Когда', 'Тогда', 'И'];
 
 String _removeLinePrefix(String rawLine) {
   final lines = rawLine.split(' ');

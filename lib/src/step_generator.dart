@@ -13,6 +13,7 @@ import 'package:bdd_widget_test/src/step/i_tap_text_and_wait.dart';
 import 'package:bdd_widget_test/src/step/i_wait.dart';
 import 'package:bdd_widget_test/src/step/the_app_is_running_step.dart';
 import 'package:strings/strings.dart';
+import 'package:translit/translit.dart';
 
 String getStepFilename(String stepText) {
   final step = getStepMethodName(stepText);
@@ -21,7 +22,8 @@ String getStepFilename(String stepText) {
 }
 
 String getStepMethodName(String stepText) {
-  final text = stepText
+  var translitText = Translit().toTranslit(source: stepText);
+  final text = translitText
       .replaceAll(parametersRegExp, '')
       .replaceAll(charactersAndNumbersRegExp, '')
       .replaceAll(repeatingSpacesRegExp, ' ')
@@ -44,19 +46,21 @@ String getStepMethodCall(String stepLine) {
   return '$name(tester, $methodParameters)';
 }
 
-String generateStepDart(String package, String line) {
+Map<String, dynamic> generateStepDart(String package, String line) {
   final methodName = getStepMethodName(line);
   final bddStep = _getStep(methodName, package, line);
-  return bddStep.content;
+  return <String, dynamic>{
+    'content': bddStep.content,
+    'imports': bddStep.imports,
+  };
 }
 
-BddStep _getStep(String methodName, String package, String line) {
-  final factory =
-      predefinedSteps[methodName] ?? (_, __) => GenericStep(methodName, line);
+SurfBddStep _getStep(String methodName, String package, String line) {
+  final factory = predefinedSteps[methodName] ?? (_, __) => SurfGenericStep(methodName, line);
   return factory(package, line);
 }
 
-final predefinedSteps = <String, BddStep Function(String, String)>{
+final predefinedSteps = <String, SurfBddStep Function(String, String)>{
   'theAppIsRunning': (package, _) => TheAppInRunningStep(package),
   'iSeeText': (_, __) => ISeeText(),
   'iSeeIcon': (_, __) => ISeeIcon(),

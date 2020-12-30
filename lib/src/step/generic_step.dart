@@ -28,3 +28,37 @@ ${getStepSignature(rawLine)} {
     return 'Future<void> $methodName(WidgetTester tester, $methodParameters) async';
   }
 }
+
+class SurfGenericStep implements SurfBddStep {
+  SurfGenericStep(this.methodName, this.rawLine);
+
+  final String rawLine;
+  final String methodName;
+
+  @override
+  String get content => '''
+// ${rawLine.replaceAll(parametersRegExp, '').replaceAll(repeatingSpacesRegExp, ' ')}
+${getStepSignature(rawLine)} {
+  throw UnimplementedError();
+}
+''';
+
+  @override
+  List<String> get imports => [
+    "import 'package:flutter_test/flutter_test.dart';",
+  ];
+
+  String getStepSignature(String stepLine) {
+    final params = parametersValueRegExp.allMatches(stepLine);
+    if (params.isEmpty) {
+      return 'Future<void> $methodName(WidgetTester tester) async';
+    }
+
+    final p = List.generate(params.length, (index) => index + 1);
+
+    final methodParameters = p.map((p) => 'dynamic param$p').join(', ');
+    return 'Future<void> $methodName(WidgetTester tester, $methodParameters) async';
+  }
+
+  String get definition => 'Future<void> $methodName(';
+}

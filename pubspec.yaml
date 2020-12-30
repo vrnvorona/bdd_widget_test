@@ -10,14 +10,31 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  build: ^1.5.0
-  build_config: ^0.4.2
+  build:
+    git:
+      url: https://github.com/vrnvorona/build
+      ref: cache_and_build_folder_fix
+      path: build
+  build_config:
+    git:
+      url: https://github.com/vrnvorona/build
+      ref: cache_and_build_folder_fix
+      path: build_config
   strings: ^0.1.2
   path: ^1.7.0
+  translit: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic: ^1.9.2
-  build_runner: ^1.10.3
-  build_web_compilers: ^2.11.0
+  build_runner:
+    git:
+      url: https://github.com/vrnvorona/build
+      ref: cache_and_build_folder_fix
+      path: build_runner
+  build_web_compilers:
+    git:
+      url: https://github.com/vrnvorona/build
+      ref: cache_and_build_folder_fix
+      path: build_web_compilers
